@@ -28,26 +28,46 @@ class player:
         self.xoffset = x_offset
         self.yoffset = y_offset
         
-    def move(self, dire):
+    def move(self):
+        keys = pygame.key.get_pressed()
 
-        if dire == LEFT:
+        if keys[pygame.K_LEFT]:
             if self.xpos > 400:
                 self.vx = -3
+            elif self.xoffset < 0:
+                self.xoffset += 3
+                self.vx = 0
+            RowNum = 0
         
-        elif dire == RIGHT:
+        elif keys[pygame.K_RIGHT]:
             if self.xpos<400:
                 self.vx=3
-                
+            elif self.xoffset>-800:
+                self.xoffset-=3
+                self.vx = 0
+            RowNum = 1
+            
         else:
             self.vx = 0
             
-        if dire == DOWN:
+        if keys[pygame.K_DOWN]:
             if self.ypos<400:
                 self.vy=3
-                
-        elif dire == UP:
+            elif self.yoffset>-800:
+                self.yoffset -=3
+                self.vy = 0
+            RowNum = 1
+            RowNum = 3
+        
+        elif keys[pygame.K_UP]:
             if self.ypos > 400:
                 self.vy = -3
+            elif self.yoffset<0:
+                self.yoffset +=3
+                self.vy = 0
+            RowNum = 0
+            RowNum = 2
+
         else:
             self.vy = 0
             
@@ -55,6 +75,10 @@ class player:
         self.ypos += self.vy
         
     def collision(self, gameMap):
+        print("Checking position: ", int((self.ypos-self.yoffset+self.pHeight)/50) , int((self.xpos-self.xoffset+self.pWidth/2)/50))
+        #print("Positions are: ", self.xpos, self.ypos)
+        #print("Offsets are: ", self.xoffset, self.yoffset)
+        
         #down collision
         if gameMap[int((self.ypos-self.yoffset+self.pHeight)/50)][int((self.xpos-self.xoffset+self.pWidth/2)/50)]==2 or gameMap[int((self.ypos-self.yoffset+self.pHeight)/50)][int((self.xpos-self.xoffset+self.pWidth/2)/50)]==3:
             self.ypos-=3
@@ -68,7 +92,7 @@ class player:
         if gameMap[int((self.ypos-self.yoffset)/50)][int((self.xpos-self.xoffset+self.pWidth+5)/50)]==2 or gameMap[int((self.ypos-self.yoffset)/50)][int((self.xpos-self.xoffset+self.pWidth+5)/50)]==3:
             self.xpos-=3
             
-            
+        
         #stop moving if you hit edge of screen (will be removed for scrolling)
         if self.xpos+self.pWidth > 800:
             self.xpos-=3
@@ -180,82 +204,15 @@ while not gameover:
     for event in pygame.event.get(): #quit game if x is pressed in top corner
         if event.type == pygame.QUIT:
             gameover = True
-     
-        if event.type == pygame.KEYDOWN: #keyboard input
-            if event.key == pygame.K_LEFT:
-                keys[LEFT]=True
-            elif event.key == pygame.K_RIGHT:
-                keys[RIGHT]=True
-            elif event.key == pygame.K_UP:
-                keys[UP]=True
-            elif event.key == pygame.K_DOWN:
-                keys[DOWN]=True
-            elif event.key == pygame.K_SPACE:
-                keys[SPACE] = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                keys[LEFT]=False
-            elif event.key == pygame.K_RIGHT:
-                keys[RIGHT]=False
-            elif event.key == pygame.K_UP:
-                keys[UP]=False
-            elif event.key == pygame.K_DOWN:
-                keys[DOWN]=False
-            elif event.key == pygame.K_SPACE:
-                keys[SPACE] = False
+
          
 
-    #LEFT MOVEMENT
-    if keys[LEFT]==True:
-        direction = LEFT
-        p1.move(direction)
-        if x_offset < 0:
-            x_offset += 3
-            p1.vx = 0
-        RowNum = 0
-        movingx = True
-       
-    #RIGHT MOVEMENT
-    elif keys[RIGHT] == True:
-        direction = RIGHT
-        p1.move(direction)
-        if x_offset>-800:
-                x_offset-=3
-                p1.vx = 0
-        RowNum = 1
-        movingx = True
+    p1.move()
         
-    #turn off velocity
-    else:
-        movingx = False
+       
     
     p1.attack()
-    
-    #DOWN MOVEMENT
-    if keys[DOWN] == True:
-        direction = DOWN
-        p1.move(direction)
-        if y_offset>-800:
-                y_offset -=3
-                p1.vy = 0
-        RowNum = 1
-        RowNum = 3
-        movingy = True
 
-         #UP MOVEMENT
-    elif keys[UP]==True:
-        direction = UP
-        p1.move(direction)
-        if y_offset<0:
-                y_offset +=3
-                p1.vy = 0
-        RowNum = 0
-        RowNum = 2
-        movingy = True
-    #turn off velocity
-    else:
-        movingy = False
-    
     
 
     if p1.health() == False:
