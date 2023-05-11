@@ -8,8 +8,7 @@ SPACE = 4
 
 
 Po = pygame.image.load('Po Souls.png') #load your spritesheet
-Po.set_colorkey((255, 0, 255)) #this makes bright pink (255, 0, 255) transparent (sort of)
-
+Po.set_colorkey((255, 0, 255)) #this makes bright pink (255, 0, 255) transparent (sort 
 class player:
     def __init__(self):
       #player variables
@@ -23,6 +22,10 @@ class player:
       self.movingy = False
       
       self.swordAlive =  False
+      self.Wlength = 30
+      self.Wwidth = 5
+      
+      
       self.isAlive = True
       self.hp = 100
       #animation variables variables
@@ -56,13 +59,13 @@ class player:
         #sword
         if self.swordAlive == True:
             if self.direction == RIGHT:
-                pygame.draw.rect(screen, (212, 139, 4), (self.xpos + 20, self.ypos + 20, 30,5))
+                pygame.draw.rect(screen, (212, 139, 4), (self.xpos + 20, self.ypos + 20, self.Wlength, self.Wwidth))
             elif self.direction == LEFT:
-                pygame.draw.rect(screen, (212, 139, 4), (self.xpos-20, self.ypos + 20, 30,5))
+                pygame.draw.rect(screen, (212, 139, 4), (self.xpos-20, self.ypos + 20, self.Wlength, self.Wwidth))
             if self.direction == DOWN:
-                pygame.draw.rect(screen, (212, 139, 4), (self.xpos+3, self.ypos + 23, 5,30))
+                pygame.draw.rect(screen, (212, 139, 4), (self.xpos+3, self.ypos + 23, self.Wwidth, self.Wlength))
             elif self.direction == UP:
-                pygame.draw.rect(screen, (212, 139, 4), (self.xpos + 23, self.ypos-13, 5,30))
+                pygame.draw.rect(screen, (212, 139, 4), (self.xpos + 23, self.ypos-13, self.Wwidth, self.Wlength))
         #player   
         if self.isAlive == True:
             screen.blit(Po, (self.xpos, self.ypos), (self.frameWidth * self.frameNum, self.RowNum * self.frameHeight, self.frameWidth, self.frameHeight)) 
@@ -70,13 +73,33 @@ class player:
     
     
     
-    def attack(self):
+    def attack(self, mx, my, mwidth, mheight, mhealth):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
                 self.swordAlive = True
         else:
             self.swordAlive = False
-            
+        #attacking enemy
+        if self.swordAlive == True:
+            if self.direction == RIGHT:
+                if self.ypos + 20 >= my and self.ypos + 25 <= mx + mheight and self.xpos + 20 >= mx and self.xpos + 50 <= mx + mwidth:
+                    mhealth -= 10
+                    print("collision is happening")
+            elif self.direction == LEFT:
+                if self.ypos + 20 >= my and self.ypos + 25 <= mx + mheight and self.xpos - 20 >= mx and self.xpos - 50 <= mx + mwidth:
+                    mhealth -= 10
+                    print("collision is happening")
+            if self.direction == UP:
+                if self.ypos - 13 >= my and self.ypos -43  <= mx + mheight and self.xpos + 23 >= mx and self.xpos + 28 <= mx + mwidth:
+                    mhealth -= 10
+                    print("collision is happening")
+            elif self.direction == DOWN:
+                if self.ypos + 23 >= my and self.ypos + 53 <= mx + mheight and self.xpos + 3 >= mx and self.xpos + 8 <= mx + mwidth:
+                    mhealth -= 10
+                    print("collision is happening")
+        #print(mhealth)
+        return mhealth
+     
     def health(self):
         if self.hp <= 0:
             self.isAlive = False

@@ -20,6 +20,7 @@ class octo:
         self.RowNum = 0
         self.frameNum = 0
         
+        self.health = 20
         self.xoffset = 0
         self.yoffset = 0
         self.ticker = 0
@@ -38,7 +39,7 @@ class octo:
         
     def move(self, map, px, py, xoff, yoff):
         self.ticker += 1
-        if int(self.ticker)%100 == 0:
+        if int(self.ticker)%75 == 0:
             self.choice = random.randrange(0,6)
             #left
             if self.choice == 0:
@@ -132,7 +133,8 @@ class octo:
 #         if self.bulletAlive == True:
 #             pygame.draw.rect(screen, (140, 118, 77), (self.Bx + xoff, self.By + yoff, 10, 10))
 
-            
+        if self.health <= 0:
+            self.isAlive = False
         if self.isAlive == True:
             screen.blit(enemy, (self.xpos + xoff, self.ypos + yoff), (self.width * self.frameNum, self.RowNum * self.height, self.width, self.height))
             
