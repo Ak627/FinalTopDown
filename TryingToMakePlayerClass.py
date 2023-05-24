@@ -52,10 +52,10 @@ map = [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2 ,2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2
        [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2 ,2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ,2 ,2, 2,2]]
 
 bamboo = pygame.image.load('Bamboo.png') #load your spritesheet
-Link = pygame.image.load('link.png') #load your spritesheet
+
 rock = pygame.image.load('Dwayne.png')
 grass = pygame.image.load('Grass.png')
-Link.set_colorkey((255, 0, 255)) #this makes bright pink (255, 0, 255) transparent (sort of)
+
 
 #player variables
 keys = [False, False, False, False, False] #this list holds whether each key has been pressed
