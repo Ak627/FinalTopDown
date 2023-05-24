@@ -3,6 +3,7 @@ import math
 from Player import player
 from Octo import octo
 from Rope import rope
+from Shop import shop
 
 pygame.init()  
 pygame.display.set_caption("Final Game")  # sets the window title
@@ -62,6 +63,9 @@ keys = [False, False, False, False, False] #this list holds whether each key has
 #animation variables variables
 ticker = 0
 direction = DOWN
+inShop = False
+s = shop()
+
 
 p1 = player()
 
@@ -115,10 +119,15 @@ while not gameover:
         #octos[i].health = p1.attack(octos[i].xpos, octos[i].ypos, octos[i].width, octos[i].height, octos[i].health)
         
     r1.health = p1.attack(r1.xpos, r1.ypos, r1.width, r1.height, r1.health)
+    
+    inShop = s.interact(p1.xpos, p1.ypos, p1.xoffset, p1.yoffset, p1.frameWidth, p1.frameHeight)
+    
+    
+    
     if p1.health() == False:
         gameover = True
 
-       
+    
     # RENDER--------------------------------------------------------------------------------
     # Once we've figured out what frame we're on and where we are, time to render.
            
@@ -134,11 +143,13 @@ while not gameover:
             if map[i][j]==3:
                 screen.blit(rock, (j*50+p1.xoffset, i*50+p1.yoffset), (0, 0, 50, 50))
         
-    #draw player
+    #draw objects
+    s.draw(screen, p1.xoffset, p1.yoffset)
     p1.draw(screen)
     r1.draw(screen, p1.xoffset, p1.yoffset)
     for i in range(len(octos)):
         octos[i].draw(screen,  p1.xoffset, p1.yoffset)
+    s.store(inShop, screen)
     pygame.display.flip()#this actually puts the pixel on the screen
    
 #end game loop------------------------------------------------------------------------------

@@ -36,18 +36,18 @@ class rope:
     def move(self, map,  px, py, xoff, yoff):
         self.ticker +=1 
         #check if player is direct line of sight
-        print("y positions in grid:", int(py/50),int(self.ypos/50))
+        #print("y positions in grid:", int(py/50),int(self.ypos/50))
         if int(py/50) == int(self.ypos/50): #check that player and rope are in same row
             
             if px > self.xpos: #check that player is to the rigth of rope
-                print("I SEE YOU, AND IM GOING RIGHT",  end = " ")
+                #print("I SEE YOU, AND IM GOING RIGHT",  end = " ")
                 if map[int((self.xpos  + 50) / 50)][int( (self.ypos)  / 50)] !=2:
                     self.direction = RIGHT
                     self.xpos+=5
                 else:
                     self.xpos += 0
             elif px < self.xpos: #left
-                print("I SEE YOU, AND IM GOING LEFT", end = " ")
+                #print("I SEE YOU, AND IM GOING LEFT", end = " ")
                 if map[int((self.ypos ) / 50)][int( (self.xpos)  / 50)] !=2:
                     self.direction = LEFT
                     self.xpos-=5
